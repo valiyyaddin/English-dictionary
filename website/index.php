@@ -29,45 +29,62 @@ $conn = null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Dictionary - Learn & Explore Words</title>
+    <meta name="description" content="Modern English Dictionary with 66,000+ words. Search, discover, and explore word meanings with our beautiful dark-themed interface.">
+    <meta name="theme-color" content="#0a0e27">
+    <title>Lexicon - Modern English Dictionary</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Modern Navbar -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M10 8h6M10 12h6M10 16h4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-title">Lexicon</span>
+                        <span class="logo-subtitle">Dictionary</span>
+                    </div>
+                </a>
+                
+                <div class="navbar-stats">
+                    <div class="nav-stat">
+                        <span class="nav-stat-value"><?php echo number_format($totalWords); ?></span>
+                        <span class="nav-stat-label">Words</span>
+                    </div>
+                    <div class="nav-stat">
+                        <span class="nav-stat-value"><?php echo number_format($todaySearches); ?></span>
+                        <span class="nav-stat-label">Today</span>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                    <rect width="40" height="40" rx="8" fill="#4F46E5"/>
-                    <path d="M10 12h20M10 20h20M10 28h12" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                <h1>English Dictionary</h1>
-            </div>
-            <div class="header-stats">
-                <div class="stat-item">
-                    <span class="stat-value"><?php echo number_format($totalWords); ?></span>
-                    <span class="stat-label">Words</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value"><?php echo number_format($todaySearches); ?></span>
-                    <span class="stat-label">Searches Today</span>
-                </div>
-            </div>
-        </header>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">Discover Words, Expand Knowledge</h1>
+            <p class="hero-subtitle">Explore over <?php echo number_format($totalWords); ?> English words with detailed definitions and meanings</p>
+        </section>
 
         <!-- Search Section -->
         <section class="search-section">
             <div class="search-container">
-                <h2 class="search-title">Discover the meaning of any word</h2>
-                <p class="search-subtitle">Explore over <?php echo number_format($totalWords); ?> English words with detailed definitions</p>
-                <div class="search-box">
+                <div class="search-wrapper">
                     <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
                         <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
-                    <input type="text" id="searchInput" placeholder="Type a word to search..." autocomplete="off">
+                    <input type="text" id="searchInput" placeholder="Search for any word..." autocomplete="off">
                     <button id="randomWordBtn" class="random-btn" title="Random Word">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                             <path d="M17 3l4 4-4 4M7 13l-4-4 4-4M21 7H3M21 17H3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </button>

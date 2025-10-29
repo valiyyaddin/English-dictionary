@@ -507,7 +507,7 @@ function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     
     const colors = {
-        success: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+        success: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
         error: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
         info: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
     };
@@ -518,16 +518,22 @@ function showNotification(message, type = 'info') {
         info: 'ℹ'
     };
     
+    const glows = {
+        success: '0 0 30px rgba(17, 153, 142, 0.6)',
+        error: '0 0 30px rgba(240, 147, 251, 0.6)',
+        info: '0 0 30px rgba(102, 126, 234, 0.6)'
+    };
+    
     notification.style.cssText = `
         position: fixed;
-        top: 24px;
+        top: 90px;
         right: 24px;
         padding: 1.25rem 1.75rem;
         background: ${colors[type]};
         color: white;
         border-radius: 16px;
-        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.25);
-        z-index: 10000;
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), ${glows[type]};
+        z-index: 10001;
         animation: slideInNotification 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         font-weight: 600;
         font-size: 0.95rem;
@@ -535,7 +541,8 @@ function showNotification(message, type = 'info') {
         align-items: center;
         gap: 0.75rem;
         max-width: 400px;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     `;
     
     notification.innerHTML = `
@@ -543,12 +550,13 @@ function showNotification(message, type = 'info') {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 24px;
-            height: 24px;
-            background: rgba(255, 255, 255, 0.3);
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.25);
             border-radius: 50%;
             font-size: 0.875rem;
             flex-shrink: 0;
+            font-weight: 700;
         ">${icons[type]}</span>
         <span>${message}</span>
     `;
@@ -560,17 +568,17 @@ function showNotification(message, type = 'info') {
         style.textContent = `
             @keyframes slideInNotification {
                 from {
-                    transform: translateX(450px) scale(0.8);
+                    transform: translateX(450px) scale(0.85) rotate(5deg);
                     opacity: 0;
                 }
                 to {
-                    transform: translateX(0) scale(1);
+                    transform: translateX(0) scale(1) rotate(0deg);
                     opacity: 1;
                 }
             }
             @keyframes slideOutNotification {
                 to {
-                    transform: translateX(450px) scale(0.8);
+                    transform: translateX(450px) scale(0.85) rotate(-5deg);
                     opacity: 0;
                 }
             }
@@ -612,28 +620,48 @@ function addWelcomeAnimation() {
         const searchInput = document.getElementById('searchInput');
         setTimeout(() => {
             searchInput.focus();
-            searchInput.placeholder = 'Try searching for "serendipity"...';
+            showNotification('Welcome to Lexicon! Start by searching any word.', 'info');
+            
+            // Animated placeholder
+            const words = ['serendipity', 'ephemeral', 'eloquent', 'luminous'];
+            let currentIndex = 0;
+            
+            const animatePlaceholder = () => {
+                searchInput.placeholder = `Try "${words[currentIndex]}"...`;
+                currentIndex = (currentIndex + 1) % words.length;
+            };
+            
+            animatePlaceholder();
+            const placeholderInterval = setInterval(animatePlaceholder, 2000);
             
             setTimeout(() => {
-                searchInput.placeholder = 'Type a word to search...';
-            }, 3000);
-        }, 500);
+                clearInterval(placeholderInterval);
+                searchInput.placeholder = 'Search for any word...';
+            }, 8000);
+        }, 800);
         
         localStorage.setItem('hasVisitedDictionary', 'true');
     }
     
-    // Add parallax effect to cards on scroll
+    // Add subtle parallax effect to cards on scroll (dark theme optimized)
     if (window.innerWidth > 768) {
+        let ticking = false;
         window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const cards = document.querySelectorAll('.word-card, .stat-card');
-            cards.forEach((card, index) => {
-                const speed = 0.5 + (index % 3) * 0.1;
-                const offset = scrolled * speed * 0.05;
-                if (scrolled < window.innerHeight * 2) {
-                    card.style.transform = `translateY(${offset}px)`;
-                }
-            });
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrolled = window.pageYOffset;
+                    const cards = document.querySelectorAll('.word-card, .stat-card');
+                    cards.forEach((card, index) => {
+                        const speed = 0.3 + (index % 3) * 0.1;
+                        const offset = scrolled * speed * 0.03;
+                        if (scrolled < window.innerHeight * 2) {
+                            card.style.transform = `translateY(${offset}px)`;
+                        }
+                    });
+                    ticking = false;
+                });
+                ticking = true;
+            }
         });
     }
 }
